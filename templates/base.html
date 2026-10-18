@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Xəbər Portalı{% endblock %}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f5f8;
+            color: #202936;
+        }
+
+        .top-header {
+            background: #142b4a;
+            color: white;
+            padding: 25px 6%;
+        }
+
+        .brand {
+            display: inline-block;
+            color: white;
+            font-size: 29px;
+            font-weight: bold;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .top-header p {
+            color: #d5dfec;
+            margin: 8px 0 0;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 16px 6%;
+            border-bottom: 1px solid #e1e5eb;
+        }
+
+        .navbar a {
+            color: #142b4a;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .navbar a:hover {
+            color: #e63946;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px;
+            min-height: 55vh;
+        }
+
+        .section-title {
+            margin: 0 0 25px;
+            padding-left: 13px;
+            border-left: 5px solid #e63946;
+            font-size: 25px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .news-content {
+            padding: 20px;
+        }
+
+        .news-content h2 {
+            margin-top: 0;
+            font-size: 19px;
+            line-height: 1.45;
+        }
+
+        .news-content h2 a {
+            color: #182b43;
+            text-decoration: none;
+        }
+
+        .news-content h2 a:hover {
+            color: #e63946;
+        }
+
+        .summary {
+            color: #5d6876;
+            line-height: 1.7;
+        }
+
+        .meta {
+            color: #7a8592;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+
+        .read-more {
+            display: inline-block;
+            margin-top: 12px;
+            color: #e63946;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        .empty-message {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .site-footer {
+            background: #142b4a;
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+            margin-top: 50px;
+        }
+
+        .site-footer p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 600px) {
+            .top-header {
+                padding: 22px 20px;
+            }
+
+            .brand {
+                font-size: 23px;
+            }
+
+            .navbar {
+                gap: 16px;
+                padding: 15px 20px;
+            }
+
+            .page-container {
+                margin-top: 25px;
+                padding: 0 15px;
+            }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <header class="top-header">
+        <a class="brand" href="{% url 'home' %}">XƏBƏR PORTALI</a>
+        <p>Ən son xəbərlər bir ünvanda</p>
+    </header>
+
+    <nav class="navbar">
+        <a href="{% url 'home' %}">Ana səhifə</a>
+
+        {% for category in categories %}
+            <a href="{% url 'category_news' category.slug %}">
+                {{ category.name }}
+            </a>
+        {% endfor %}
+    </nav>
+
+    <main class="page-container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p><strong>Xəbər Portalı</strong></p>
+        <p>© {% now "Y" %} Bütün hüquqlar qorunur.</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

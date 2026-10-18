@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ category.name }} — Xəbər Portalı</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f5f8;
+            color: #202936;
+        }
+
+        header {
+            background: #142b4a;
+            color: white;
+            padding: 24px 6%;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .news-card {
+            background: white;
+            padding: 22px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .news-card h2 a {
+            color: #142b4a;
+            text-decoration: none;
+        }
+
+        .news-card h2 a:hover {
+            color: #e63946;
+        }
+
+        .meta {
+            color: #7a8592;
+            font-size: 13px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #142b4a;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>{{ category.name }}</h1>
+    <a href="{% url 'home' %}">← Ana səhifə</a>
+</header>
+
+<main>
+    <a class="back" href="{% url 'home' %}">
+        ← Bütün xəbərlərə qayıt
+    </a>
+
+    {% for news in news_list %}
+        <article class="news-card">
+            <h2>
+                <a href="{% url 'news_detail' news.slug %}">
+                    {{ news.title }}
+                </a>
+            </h2>
+
+            <p>
+                {{ news.summary|default:"Xəbərin davamını oxuyun."|truncatewords:35 }}
+            </p>
+
+            <div class="meta">
+                {{ news.source }}
+
+                {% if news.published_at %}
+                    · {{ news.published_at|date:"d.m.Y H:i" }}
+                {% endif %}
+            </div>
+        </article>
+    {% empty %}
+        <p>Bu kateqoriyada hələ dərc edilmiş xəbər yoxdur.</p>
+    {% endfor %}
+</main>
+
+</body>
+</html>

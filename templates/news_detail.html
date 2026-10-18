@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ news.title }}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f5f8;
+            color: #202936;
+            line-height: 1.7;
+        }
+
+        header {
+            background: #142b4a;
+            color: white;
+            padding: 22px 6%;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #142b4a;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .article {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        h1 {
+            line-height: 1.35;
+            font-size: 34px;
+        }
+
+        .meta {
+            color: #7a8592;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .cover {
+            width: 100%;
+            max-height: 480px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .summary {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .original {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 18px;
+            border-radius: 6px;
+            background: #e63946;
+            color: white;
+            text-decoration: none;
+        }
+
+        .related {
+            margin-top: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .related a {
+            color: #142b4a;
+        }
+
+        @media (max-width: 600px) {
+            .article {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="{% url 'home' %}">
+        <strong>← XƏBƏR PORTALI</strong>
+    </a>
+</header>
+
+<main class="container">
+    <a class="back" href="{% url 'home' %}">
+        ← Ana səhifəyə qayıt
+    </a>
+
+    <article class="article">
+        <h1>{{ news.title }}</h1>
+
+        <div class="meta">
+            Mənbə: {{ news.source }}
+
+            {% if news.published_at %}
+                · {{ news.published_at|date:"d.m.Y H:i" }}
+            {% endif %}
+
+            · Baxış sayı: {{ news.views_count }}
+        </div>
+
+        {% if news.image_url %}
+            <img
+                class="cover"
+                src="{{ news.image_url }}"
+                alt="{{ news.title }}"
+            >
+        {% endif %}
+
+        {% if news.summary %}
+            <p class="summary">{{ news.summary }}</p>
+        {% endif %}
+
+        {% if news.content %}
+            <div>{{ news.content|linebreaks }}</div>
+        {% endif %}
+
+        {% if news.original_url %}
+            <a
+                class="original"
+                href="{{ news.original_url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Orijinal xəbəri oxu ↗
+            </a>
+        {% endif %}
+    </article>
+
+    {% if related_news %}
+        <section class="related">
+            <h2>Oxşar xəbərlər</h2>
+
+            <ul>
+                {% for item in related_news %}
+                    <li>
+                        <a href="{% url 'news_detail' item.slug %}">
+                            {{ item.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endif %}
+</main>
+
+</body>
+</html>

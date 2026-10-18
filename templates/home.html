@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Ana səhifə — Xəbər Portalı{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Son xəbərlər</h2>
+
+    <div class="news-grid">
+        {% for news in news_list %}
+            <article class="news-card">
+
+                {% if news.image_url %}
+                    <a href="{% url 'news_detail' news.slug %}">
+                        <img
+                            src="{{ news.image_url }}"
+                            alt="{{ news.title }}"
+                            loading="lazy"
+                        >
+                    </a>
+                {% endif %}
+
+                <div class="news-content">
+                    <h2>
+                        <a href="{% url 'news_detail' news.slug %}">
+                            {{ news.title }}
+                        </a>
+                    </h2>
+
+                    <p class="summary">
+                        {{ news.summary|default:"Xəbərin davamını oxuyun."|truncatewords:30 }}
+                    </p>
+
+                    <div class="meta">
+                        Mənbə: {{ news.source }}
+
+                        {% if news.published_at %}
+                            · {{ news.published_at|date:"d.m.Y H:i" }}
+                        {% endif %}
+                    </div>
+
+                    <a class="read-more"
+                       href="{% url 'news_detail' news.slug %}">
+                        Ətraflı oxu →
+                    </a>
+                </div>
+            </article>
+        {% empty %}
+            <div class="empty-message">
+                <h3>Hazırda dərc edilmiş xəbər yoxdur.</h3>
+                <p>Xəbərləri admin panelində təsdiqləyib dərc edə bilərsən.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
