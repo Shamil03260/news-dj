@@ -3,7 +3,6 @@ from .models import News, Category
 
 
 def home(request):
-    # Yalnız dərc edilmiş xəbərləri göstəririk.
     news_list = News.objects.filter(
         status=News.Status.PUBLISHED
     ).select_related("category").order_by(
@@ -48,7 +47,6 @@ def news_detail(request, slug):
 
 
 def category_news(request, slug):
-    # Kateqoriyanı tapırıq.
     category = get_object_or_404(
         Category,
         slug=slug
